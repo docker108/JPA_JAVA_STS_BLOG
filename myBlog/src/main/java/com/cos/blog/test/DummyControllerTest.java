@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,23 @@ public class DummyControllerTest {
 	// save함수는 id를 전달하면 해당 id에 대한 데이터가 있으면 update를 해주고
 	// save함수는 id를 전달하면 해당 id에 대한 데이터가 없으면 insert를 해준다.
 	// email, password
+//	IllegalArgumentException
+	
+	@DeleteMapping("/dummy/user/{id}")
+	public String delete(@PathVariable int id) {
+		
+		try {
+			userRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			// TODO: handle exception
+			return "삭제에 실패하였습니다. 해당 id는 DB에 없습니다.";
+		}
+		
+		
+		
+		return "삭제되었습니다. id: "+ id;
+	}
+	
 	@Transactional
 	@PutMapping("/dummy/user/{id}")
 	public User updateUser(@PathVariable int id, @RequestBody User requestUser) { // json 데이터를 요청 => Java Object(MessageConverter의 Jaskson라이브러리가 변환해서 받아준다.)
@@ -52,7 +71,8 @@ public class DummyControllerTest {
 //		requestUser.setUsername("ssar");
 //		userRepository.save(requestUser); // save할 떄는 insert할 때 사용 / id값이 있으면 update를 해줌. 하지만 null 값이 있기때문에 보통 update할 떄는 save를 사용하지 않는다.
 		
-		return null;
+		// 더티 체킹
+		return user;
 	}
 	
 	// http://localhost:8000/blog/dummy/user
