@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Entity // User 클래스가 MYSQL에 테이블이 생성이 된다.
 //@DynamicInsert // insert할 때 null인 필드 제외
 public class User {
-//	...
+//	...----
 	@Id // Primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 프로젝트에서 연결된 DB의 넘버링 전략을 따라간다.
 	private int id; // 시퀀스, auto_increment
