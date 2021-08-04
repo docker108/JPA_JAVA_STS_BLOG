@@ -12,6 +12,7 @@ import com.cos.blog.repository.UserRepository;
 
 // 서비스가 필요한이유.
 // 1. 트랜잭션 관리.
+// -> 트랜잭션이란 일이 처리되기 위한 가장 작은 단위
 // 2. 서비스 의미 때문.
 @Service
 public class UserService {
@@ -24,7 +25,14 @@ public class UserService {
 	@Transactional
 	public void Regist(User user) {
 			// ex 2. 여러개의 트랜잭션
-//			userRepository.save(user);
+//			userRepository.save(user); 
 			userRepository.save(user);
 	}
+	
+	@Transactional(readOnly = true) // Select할 때 트랜잭션 시작, 서비스 종료시에 트랜잭션 종료(정합성)
+	public User Login(User user) {
+		return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+	}
+	
+
 }
