@@ -22,7 +22,7 @@ public class UserApiController {
 	@PostMapping("/api/user")
 	public ResponseDto<Integer> save (@RequestBody User user) { // username, password, email
 		System.out.println("UserApiController: save 호출됨");
-		// 실제로 DB에 insert를 하고 아래에서 return이 되면 됩니다.
+		// 실제로 DB에 insert를 하고 아래에서 return이 되면 됩니다. 
 		
 		user.setRole(RoleType.USER);
 		userService.Regist(user);
