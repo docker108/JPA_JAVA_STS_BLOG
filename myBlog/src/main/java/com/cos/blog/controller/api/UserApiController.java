@@ -19,6 +19,7 @@ public class UserApiController {
 	@Autowired
 	private UserService userService;
 	
+	
 	@PostMapping("/api/user")
 	public ResponseDto<Integer> save (@RequestBody User user) { // username, password, email
 		System.out.println("UserApiController: save 호출됨");
@@ -29,17 +30,25 @@ public class UserApiController {
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바오트젝트를 JSON으로 변환해서 리턴(Jackson)
 	}
 	
-	// 스프링 시큐리티 이용해서 로그인!!
-	// 아래방법은 전통적인 로그인 방법임
-	@PostMapping("/api/user/login")
-	public ResponseDto<Integer> login(@RequestBody User user, HttpSession session){
-		System.out.println("UserApiController: login 호출됨");
-		User principal = userService.Login(user); // principal (접근주체)라는 뜻, 많이 쓰임
-		if(principal != null) {
-			session.setAttribute("principal", principal);
-		}
-		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
-	}
+	
+	
+	
+	
+	
+//	@Autowired
+//	private HttpSession session; // login 함수에 매개변수로 넣으면 사용안해도 됨.
+	
+//	// 스프링 시큐리티 이용해서 로그인!!
+//	// 아래방법은 전통적인 로그인 방법임
+//	@PostMapping("/api/user/login")
+//	public ResponseDto<Integer> login(@RequestBody User user, HttpSession session){
+//		System.out.println("UserApiController: login 호출됨");
+//		User principal = userService.Login(user); // principal (접근주체)라는 뜻, 많이 쓰임
+//		if(principal != null) {
+//			session.setAttribute("principal", principal);
+//		}
+//		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+//	}
 	
 
 }
