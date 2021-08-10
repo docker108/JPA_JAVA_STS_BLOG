@@ -24,13 +24,8 @@ public class UserApiController {
 	@PostMapping("/auth/joinProc")
 	public ResponseDto<Integer> save (@RequestBody User user) { // username, password, email
 		System.out.println("UserApiController: save 호출됨");
-<<<<<<< HEAD
-		// 실제로 DB에 insert를 하고 아래에서 return이 되면 됩니다. 
-		
-		user.setRole(RoleType.USER);
-=======
 		// 실제로 DB에 insert를 하고 아래에서 return이 되면 됩니다.
->>>>>>> blog_process
+		
 		userService.Regist(user);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바오트젝트를 JSON으로 변환해서 리턴(Jackson)
 	}
