@@ -2,6 +2,7 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal" var="principal"/>
 </sec:authorize>
@@ -17,6 +18,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- 게시글 작성 textarea부분 -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
@@ -28,16 +33,17 @@
 		<c:choose>
 			<c:when test="${empty principal}">
 				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link" href="/loginForm">Login</a></li>
-					<li class="nav-item"><a class="nav-link" href="/joinForm">Regist</a></li>
+					<li class="nav-item"><a class="nav-link" href="/auth/loginForm">Login</a></li>
+					<li class="nav-item"><a class="nav-link" href="/auth/joinForm">Regist</a></li>
 				</ul>
 				
 			</c:when>
 			<c:otherwise>
 
 				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link" href="/board/form">글쓰기</a></li>
-					<li class="nav-item"><a class="nav-link" href="/user/form">회원정보</a></li>
+				<!-- 글쓰기와 회원정보는 로그인이 된 사람이 들어가기 때문에 auth를 사용안함. -->
+					<li class="nav-item"><a class="nav-link" href="/board/saveForm">글쓰기</a></li>
+					<li class="nav-item"><a class="nav-link" href="/user/updateForm">회원정보</a></li>
 					<li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
 				</ul>
 				
