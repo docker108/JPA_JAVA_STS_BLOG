@@ -1,5 +1,7 @@
 package com.cos.blog.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,13 +36,14 @@ public class BoardService {
 		boardRepository.save(board);
 	}
 	
+
 	@Transactional(readOnly = true)
-	public Page<Board> 글목록(Pageable pageable){
+	public Page<Board> board_list(Pageable pageable){
 		return boardRepository.findAll(pageable);
 	}
 	
 	@Transactional(readOnly = true)
-	public Board 글상세보기(int id) {
+	public Board board_detail(int id) {
 		return boardRepository.findById(id)
 				.orElseThrow(()->{
 					return new IllegalArgumentException("글 상세보기 실패 : 아이디를 찾을 수 없습니다.");
@@ -48,13 +51,13 @@ public class BoardService {
 	}
 	
 	@Transactional
-	public void 글삭제하기(int id) {
-		System.out.println("글삭제하기 : "+id);
+	public void board_delete(int id) {
+		System.out.println("board_delete : "+id);
 		boardRepository.deleteById(id);
 	}
 	
 	@Transactional
-	public void 글수정하기(int id, Board requestBoard) {
+	public void board_update(int id, Board requestBoard) {
 		Board board = boardRepository.findById(id)
 				.orElseThrow(()->{
 					return new IllegalArgumentException("글 찾기 실패 : 아이디를 찾을 수 없습니다.");
