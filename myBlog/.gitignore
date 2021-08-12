@@ -134,5 +134,3 @@ target/
 # End of https://www.toptal.com/developers/gitignore/api/java-web,java,eclipse
 
 
-# 따로추가
-*.yml
