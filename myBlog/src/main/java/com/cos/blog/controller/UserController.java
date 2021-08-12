@@ -71,11 +71,16 @@ public class UserController {
 		params.add("code", code);
 
 		// HttpHeader와 HttpBody를 하나의 오브젝트에 담기
-		HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
+		HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = 
+				new HttpEntity<>(params, headers);
 
 		// Http 요청하기 - Post방식으로 - 그리고 response 변수의 응답 받음.
-		ResponseEntity<String> response = rt.exchange("https://kauth.kakao.com/oauth/token", HttpMethod.POST,
-				kakaoTokenRequest, String.class);
+		ResponseEntity<String> response = rt.exchange(
+				"https://kauth.kakao.com/oauth/token",
+				HttpMethod.POST,
+				kakaoTokenRequest, 
+				String.class
+		);
 
 		// Gson, Json Simple, ObjectMapper
 		ObjectMapper objectMapper = new ObjectMapper();
