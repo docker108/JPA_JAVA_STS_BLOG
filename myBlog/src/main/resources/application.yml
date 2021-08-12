@@ -12,7 +12,7 @@ spring:
     view:
       prefix: /WEB-INF/views/ # prefix는 컨트롤러가 리턴할 때 앞에 붙여주는 경로명 / suffix는 뒤
       suffix: .jsp
-#
+# 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul
