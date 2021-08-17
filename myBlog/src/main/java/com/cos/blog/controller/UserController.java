@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.cos.blog.model.KakaoProfile;
-import com.cos.blog.model.OAuthToken;
+//import com.cos.blog.model.KakaoProfile;
+//import com.cos.blog.model.OAuthToken;
 import com.cos.blog.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
