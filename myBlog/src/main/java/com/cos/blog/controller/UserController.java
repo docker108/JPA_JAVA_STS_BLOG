@@ -19,8 +19,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.cos.blog.model.KakaoProfile;
 import com.cos.blog.model.OAuthToken;
-//import com.cos.blog.model.KakaoProfile;
-//import com.cos.blog.model.OAuthToken;
 import com.cos.blog.model.User;
 import com.cos.blog.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,8 +33,8 @@ public class UserController {
 	// static 이하에 있는 /js/**, /css/**, /image/**
 	// 인증이 필요없는 곳은 auth를 붙여서 진행
 	
-//	@Value("${cos.key}")
-//	private String cosKey;
+	@Value("${cos.key}")
+	private String cosKey;
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -51,18 +49,19 @@ public class UserController {
 
 	@GetMapping("/auth/loginForm")
 	public String loginForm() {
-
 		return "user/loginForm";
 	}
 
 	@GetMapping("/user/updateForm")
 	public String updateForm() {
-
 		return "user/updateForm";
 	}
 
 	@GetMapping("/auth/kakao/callback")
-	public @ResponseBody String kakaoCallback(String code) { // Data를 리턴해주는 함수
+	public  String kakaoCallback(String code) { // Data를 리턴해주는 함수
+		
+		// ****** public @ResponseBody String kakaoCallback(String code) 
+		// -> @ResponseBody 를 지워줘야 return값인 redirect:/ 값이 문자 그대로가 아닌 페이지로 넘어감
 		
 		// POST방식으로 key=value 데이터를 요청 (카카오쪽으로)
 		// Retrofit2
@@ -76,9 +75,9 @@ public class UserController {
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8"); // content type을 담아야 한다. - 내가 전송할 body data가 header에 key=value형태라는 것을 알려준다.
 
 		// HttpBody 오브젝트 생성
-		String myLocal = "http://localhost:8000";
-		String client_ID = "b344701c3ff69917f13cd47bb45df871";
 		String grant_TYPE = "authorization_code";
+		String client_ID = "79428676416bc943bbcc785237e34e90";
+		String myLocal = "http://localhost:8000";
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", grant_TYPE); 
 		params.add("client_id", client_ID);
@@ -96,7 +95,7 @@ public class UserController {
 				kakaoTokenRequest, 
 				String.class
 		);
-
+		
 		// Gson, Json Simple, ObjectMapper
 		ObjectMapper objectMapper = new ObjectMapper();
 		OAuthToken oauthToken = null;
@@ -118,7 +117,8 @@ public class UserController {
 		headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
 		// HttpHeader와 HttpBody를 하나의 오브젝트에 담기
-		HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 = new HttpEntity<>(headers2);
+		HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 = 
+				new HttpEntity<>(headers2);
 
 		// Http 요청하기 - Post방식으로 - 그리고 response 변수의 응답 받음.
 		ResponseEntity<String> response2 = rt2.exchange(
@@ -127,6 +127,9 @@ public class UserController {
 				kakaoProfileRequest2, 
 				String.class
 		);
+		
+		System.out.println(response2.getBody());
+		
 		System.out.println(response2.getBody());
 
 		ObjectMapper objectMapper2 = new ObjectMapper();
@@ -146,28 +149,30 @@ public class UserController {
 		System.out.println("블로그서버 유저네임 : " + kakaoProfile.getKakao_account().getEmail() + "_" + kakaoProfile.getId());
 		System.out.println("블로그서버 이메일 : " + kakaoProfile.getKakao_account().getEmail());
 		// UUID란 -> 중복되지 않는 어떤 특정 값을 만들어내는 알고리즘
-//		System.out.println("블로그서버 패스워드 : " + cosKey);
+		System.out.println("블로그서버 패스워드 : " + cosKey);
 
-//		User kakaoUser = User.builder()
-//				.username(kakaoProfile.getKakao_account().getEmail() + "_" + kakaoProfile.getId()).password(cosKey)
-//				.email(kakaoProfile.getKakao_account().getEmail()).oauth("kakao").build();
+		User kakaoUser = User.builder()
+				.username(kakaoProfile.getKakao_account().getEmail() + "_" + kakaoProfile.getId())
+				.password(cosKey)
+				.email(kakaoProfile.getKakao_account().getEmail())
+				.oauth("kakao")
+				.build();
 
 		// 가입자 혹은 비가입자 체크 해서 처리
-//		User originUser = userService.user_find(kakaoUser.getUsername());
-//
-//		if (originUser.getUsername() == null) {
-//			System.out.println("기존 회원이 아니기에 자동 회원가입을 진행합니다");
-//			userService.Regist(kakaoUser);
-//		}
-//
-//		System.out.println("자동 로그인을 진행합니다.");
-		// 로그인 처리
-//		Authentication authentication = authenticationManager
-//				.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUsername(), cosKey));
-//		SecurityContextHolder.getContext().setAuthentication(authentication);
+		User originUser = userService.user_find(kakaoUser.getUsername());
 
-		return response2.getBody();
-//		return "redirect:/";
+		if (originUser.getUsername() == null) {
+			System.out.println("기존 회원이 아니기에 자동 회원가입을 진행합니다");
+			userService.Regist(kakaoUser);
+		}
+		System.out.println("자동 로그인을 진행합니다.");
+//		로그인 처리
+		Authentication authentication = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUsername(), cosKey));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		return "redirect:/";
+//		return response2.getBody();
 	}
 
 }
