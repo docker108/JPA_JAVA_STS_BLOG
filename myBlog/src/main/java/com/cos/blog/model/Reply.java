@@ -38,7 +38,7 @@ public class Reply {
 	
 	@ManyToOne 
 	@JoinColumn(name="boardId")
-	private Board board; // DB는 오브젝트ㅡㄹ 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다.
+	private Board board; // DB는 오브젝트를 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다.
 	
 	@ManyToOne
 	@JoinColumn(name = "userId")
