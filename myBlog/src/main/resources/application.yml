@@ -33,6 +33,10 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
+
+# cos.key 는 절대 유출되면 안됨.(이건 TEST용)     
+cos:
+  key: 123qwe##
       
       
       
